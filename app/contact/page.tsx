@@ -1,0 +1,3 @@
+import type { Metadata } from "next";
+export const metadata: Metadata = { title: "Contact", description: "Contact Meesho Label Cropper support." };
+export default function Page(){return <main className="container article"><span className="eyebrow">Contact</span><h1>Contact</h1><p>Replace this page with your support email, business details and preferred response channel before publishing the site.</p><h2>What to include in a support request</h2><ul><li>Browser and operating system.</li><li>Approximate PDF page count and whether it contains TAX INVOICE.</li><li>A screenshot of the output problem with personal order details hidden.</li></ul></main>}
