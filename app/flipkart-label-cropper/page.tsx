@@ -6,8 +6,30 @@ export const metadata: Metadata = {
   title: "Flipkart Label Cropper – Free A4 Shipping Label PDF Tool",
   description:
     "Crop and arrange Flipkart shipping labels from bulk order PDFs. Print 4, 6 or 8 labels on one A4 page. Completely free, browser-based, no sign-up needed.",
-  keywords: ["flipkart label cropper", "flipkart shipping label", "flipkart pdf label print", "flipkart a4 label"],
-  alternates: { canonical: "https://www.labelcropper.in/flipkart-label-cropper" },
+  keywords: [
+    "flipkart label cropper",
+    "flipkart shipping label",
+    "flipkart pdf label print",
+    "flipkart a4 label",
+    "flipkart bulk order label",
+    "flipkart seller label tool",
+  ],
+  alternates: { canonical: "https://www.shiplabeltool.com/flipkart-label-cropper" },
+  openGraph: {
+    title: "Flipkart Label Cropper – Free A4 Shipping Label PDF Tool",
+    description: "Crop and arrange Flipkart shipping labels from bulk order PDFs. Print 4, 6 or 8 labels on one A4 page. Free and browser-based.",
+    url: "https://www.shiplabeltool.com/flipkart-label-cropper",
+    siteName: "ShipLabelTool",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Flipkart Label Cropper Tool" }],
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Flipkart Label Cropper – Free A4 Shipping Label PDF Tool",
+    description: "Crop and arrange Flipkart shipping labels from bulk order PDFs. 100% private, browser-based.",
+    images: ["/og-image.png"],
+  },
 };
 
 const ICON = (

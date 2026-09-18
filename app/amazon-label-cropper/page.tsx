@@ -6,8 +6,30 @@ export const metadata: Metadata = {
   title: "Amazon Label Cropper – Free A4 Shipping Label PDF Tool",
   description:
     "Crop and arrange Amazon seller shipping labels from PDF files. Print 4, 6 or 8 labels per A4 page. Free, browser-based, no login required.",
-  keywords: ["amazon label cropper", "amazon shipping label", "amazon seller label pdf", "amazon a4 label print"],
-  alternates: { canonical: "https://www.labelcropper.in/amazon-label-cropper" },
+  keywords: [
+    "amazon label cropper",
+    "amazon shipping label",
+    "amazon seller label pdf",
+    "amazon a4 label print",
+    "amazon easy ship label",
+    "amazon seller flex label",
+  ],
+  alternates: { canonical: "https://www.shiplabeltool.com/amazon-label-cropper" },
+  openGraph: {
+    title: "Amazon Label Cropper – Free A4 Shipping Label PDF Tool",
+    description: "Crop and arrange Amazon seller shipping labels from PDF files. Print 4, 6 or 8 labels per A4 page. Free and browser-based.",
+    url: "https://www.shiplabeltool.com/amazon-label-cropper",
+    siteName: "ShipLabelTool",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Amazon Label Cropper Tool" }],
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Amazon Label Cropper – Free A4 Shipping Label PDF Tool",
+    description: "Crop and arrange Amazon seller shipping labels from PDF files. 100% private, browser-based.",
+    images: ["/og-image.png"],
+  },
 };
 
 const ICON = (

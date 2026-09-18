@@ -6,8 +6,31 @@ export const metadata: Metadata = {
   title: "Meesho Label Cropper – Free Online PDF Shipping Label Tool",
   description:
     "Automatically crop Meesho shipping labels from bulk order PDFs. Arrange 4, 6 or 8 labels on one A4 sheet. 100% private, browser-based, no login required.",
-  keywords: ["meesho label cropper", "meesho pdf label", "meesho shipping label", "meesho a4 label print"],
-  alternates: { canonical: "https://www.labelcropper.in/meesho-label-cropper" },
+  keywords: [
+    "meesho label cropper",
+    "meesho pdf label",
+    "meesho shipping label",
+    "meesho a4 label print",
+    "meesho bulk order label",
+    "meesho label crop tool",
+    "print meesho labels on A4",
+  ],
+  alternates: { canonical: "https://www.shiplabeltool.com/meesho-label-cropper" },
+  openGraph: {
+    title: "Meesho Label Cropper – Free Online PDF Shipping Label Tool",
+    description: "Automatically crop Meesho shipping labels from bulk order PDFs. Arrange 4, 6 or 8 labels on one A4 sheet. 100% private, browser-based.",
+    url: "https://www.shiplabeltool.com/meesho-label-cropper",
+    siteName: "ShipLabelTool",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Meesho Label Cropper Tool" }],
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Meesho Label Cropper – Free Online PDF Shipping Label Tool",
+    description: "Automatically crop Meesho shipping labels from bulk order PDFs. 100% private, browser-based.",
+    images: ["/og-image.png"],
+  },
 };
 
 const ICON = (

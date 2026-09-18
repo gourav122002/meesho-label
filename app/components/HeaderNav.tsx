@@ -90,8 +90,7 @@ export default function HeaderNav() {
       <div className="container nav">
         {/* Logo */}
         <Link href="/" className="brand">
-          <span className="brand-mark">✂️</span>
-          <span>Label Cropper</span>
+          <span>Ship Label Tool</span>
         </Link>
 
         {/* Desktop Nav */}

@@ -7,9 +7,24 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: "Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool", template: `%s | ${siteName}` },
   description: "Free online tool to crop Meesho, Flipkart, and Amazon shipping labels from PDF. Arrange 4, 6 or 8 labels on one A4 page. 100% private, browser-based.",
-  keywords: ["meesho label cropper", "flipkart label cropper", "amazon label cropper", "shipping label crop tool", "meesho label with invoice", "4 labels on A4"],
-  robots: { index: true, follow: true },
+  keywords: ["meesho label cropper", "flipkart label cropper", "amazon label cropper", "shipping label crop tool", "meesho label with invoice", "4 labels on A4", "ship label tool", "shiplabeltool"],
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   icons: { icon: "/favicon.svg" },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: siteUrl,
+    siteName: siteName,
+    title: "Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool",
+    description: "Free online tool to crop Meesho, Flipkart, and Amazon shipping labels from PDF. Arrange 4, 6 or 8 labels on one A4 page. 100% private, browser-based.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ShipLabelTool – Shipping Label Cropper for Indian Sellers" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool",
+    description: "Free tool to crop shipping labels from PDF and print 4, 6 or 8 per A4 page. 100% browser-based.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

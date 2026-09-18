@@ -1,5 +1,35 @@
+import type { Metadata } from "next";
 import PlatformSelector from "./components/PlatformSelector";
 import SeoJsonLd from "./components/SeoJsonLd";
+
+export const metadata: Metadata = {
+  title: "Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool",
+  description: "Free online tool to crop Meesho, Flipkart, and Amazon shipping labels from PDF. Arrange 4, 6 or 8 labels on one A4 page. 100% private, browser-based.",
+  alternates: { canonical: "https://www.shiplabeltool.com" },
+  openGraph: {
+    title: "Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool",
+    description: "Free online tool to crop Meesho, Flipkart, and Amazon shipping labels from PDF. Arrange 4, 6 or 8 labels on one A4 page. 100% private, browser-based.",
+    url: "https://www.shiplabeltool.com",
+    siteName: "ShipLabelTool",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ShipLabelTool – Shipping Label Cropper for Indian Sellers" }],
+    type: "website",
+    locale: "en_IN",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shipping Label Cropper – Meesho, Flipkart & Amazon",
+    description: "Free online shipping label cropper for Meesho, Flipkart & Amazon sellers. 100% private, browser-based.",
+    images: ["/og-image.png"],
+  },
+};
+
+const homeFaqs = [
+  { q: "Which paper size should I use?", a: "Standard A4 (210 × 297 mm). The PDF is pre-formatted in A4 landscape — just print at 100% scale with no margins." },
+  { q: "Is my customer order data safe?", a: "Yes. All PDF processing happens locally inside your web browser using JavaScript. No files are sent to any server or stored anywhere." },
+  { q: "Does it work for Flipkart and Amazon too?", a: "Yes. Select the platform and upload the PDF. The tool reads the label structure and crops accordingly." },
+  { q: "Can I use it on a thermal label printer?", a: "Yes. Use the 'Test 1 label' option to download a single label and test on your thermal printer before doing the full batch." },
+  { q: "What if TAX INVOICE is not detected?", a: "Make sure you are uploading the actual Meesho seller PDF, not a screenshot or a re-saved file. The tool reads PDF text to find the invoice boundary." },
+];
 
 export default function Home() {
   return (
@@ -8,7 +38,10 @@ export default function Home() {
         path="/"
         title="Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool"
         description="Free online tool to crop Meesho, Flipkart, and Amazon shipping labels. Arrange 4, 6 or 8 labels on one A4 page. 100% private and processed in your browser."
+        appName="ShipLabelTool"
+        faqs={homeFaqs}
       />
+
       <main>
 
         {/* ════════════════════════════════
