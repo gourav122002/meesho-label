@@ -92,23 +92,48 @@ export async function inspectMeeshoPdf(file: File): Promise<LabelRegion[]> {
 }
 
 export type LabelsPerPage = 4 | 6 | 8;
+export type PageOrientation = "portrait" | "landscape";
 
-const LAYOUT_MAP: Record<LabelsPerPage, { cols: number; rows: number; vertical: boolean }> = {
-  4: { cols: 2, rows: 2, vertical: false }, // 2×2 landscape cells — labels horizontal
-  6: { cols: 3, rows: 2, vertical: true  }, // 3×2 portrait  cells — labels rotated vertical
-  8: { cols: 4, rows: 2, vertical: true  }, // 4×2 portrait  cells — labels rotated vertical
+interface LayoutConfig {
+  cols: number;
+  rows: number;
+  vertical: boolean;
+}
+
+// Portrait layout: Meesho labels are landscape-shaped (wider than tall).
+// We rotate them 90° CW to fill the tall-narrow portrait cells.
+// Each cell on a portrait A4 is taller than wide, so a rotated label fits well.
+const LAYOUT_MAP_PORTRAIT: Record<LabelsPerPage, LayoutConfig> = {
+  4: { cols: 2, rows: 2, vertical: true }, // 2×2 portrait cells — labels rotated 90° to fit
+  6: { cols: 2, rows: 3, vertical: false }, // 2×3 portrait cells — labels rotated 90° to fit
+  8: { cols: 2, rows: 4, vertical: false }, // 2×4 portrait cells — labels rotated 90° to fit
 };
 
-export async function createA4LandscapePdf(file: File, labels: LabelRegion[], labelsPerPage: LabelsPerPage = 4) {
+const LAYOUT_MAP_LANDSCAPE: Record<LabelsPerPage, LayoutConfig> = {
+  4: { cols: 2, rows: 2, vertical: false }, // 2×2 landscape cells — labels horizontal
+  6: { cols: 3, rows: 2, vertical: true  }, // 3×2 landscape cells — labels rotated vertical
+  8: { cols: 4, rows: 2, vertical: true  }, // 4×2 landscape cells — labels rotated vertical
+};
+
+export async function createA4Pdf(
+  file: File,
+  labels: LabelRegion[],
+  labelsPerPage: LabelsPerPage = 4,
+  orientation: PageOrientation = "portrait"
+) {
   const { PDFDocument, degrees } = await import("pdf-lib");
   const sourceBytes = new Uint8Array(await file.arrayBuffer());
   const sourceDoc = await PDFDocument.load(sourceBytes);
   const output = await PDFDocument.create();
 
-  const { cols: COLS, rows: ROWS, vertical } = LAYOUT_MAP[labelsPerPage];
-  // Always A4 landscape (841.89 × 595.28 pt)
-  const PAGE_W = 841.8898;
-  const PAGE_H = 595.2756;
+  const isPortrait = orientation === "portrait";
+  // A4 Standard Dimensions: 595.2756 × 841.8898 pt (210 × 297 mm)
+  const PAGE_W = isPortrait ? 595.2756 : 841.8898;
+  const PAGE_H = isPortrait ? 841.8898 : 595.2756;
+
+  const layoutMap = isPortrait ? LAYOUT_MAP_PORTRAIT : LAYOUT_MAP_LANDSCAPE;
+  const { cols: COLS, rows: ROWS, vertical } = layoutMap[labelsPerPage];
+
   const MARGIN = 12;
   const GAP = 8;
   const cellW = (PAGE_W - MARGIN * 2 - GAP * (COLS - 1)) / COLS;
@@ -138,22 +163,14 @@ export async function createA4LandscapePdf(file: File, labels: LabelRegion[], la
       const cellY = MARGIN + (ROWS - 1 - row) * (cellH + GAP);
 
       if (vertical) {
-        // Rotate 90° CCW so label renders in portrait/vertical orientation.
-        // After CCW rotation the embedded's original width becomes the rendered height
-        // and original height becomes the rendered width.
-        // Scale to best-fit cell treating rotated dimensions:
+        // Rotate 90° CCW so label renders in vertical orientation.
         const scale = Math.min(cellW / embedded.height, cellH / embedded.width);
-        const rw = embedded.height * scale; // rendered horizontal extent in the cell
-        const rh = embedded.width  * scale; // rendered vertical   extent in the cell
+        const rw = embedded.height * scale;
+        const rh = embedded.width * scale;
 
-        // Center within cell
         const px = cellX + (cellW - rw) / 2;
         const py = cellY + (cellH - rh) / 2;
 
-        // pdf-lib CCW 90° anchor math:
-        //   drawing at (x,y) with w×h, rotated 90° CCW spans x‑h→x horizontally, y→y+w vertically.
-        //   So to place rendered box at (px, py) with extent (rw, rh):
-        //     x = px + rw,  y = py,  width = rh,  height = rw
         page.drawPage(embedded, {
           x: px + rw,
           y: py,
@@ -163,9 +180,9 @@ export async function createA4LandscapePdf(file: File, labels: LabelRegion[], la
         });
       } else {
         const scale = Math.min(cellW / embedded.width, cellH / embedded.height);
-        const width  = embedded.width  * scale;
+        const width = embedded.width * scale;
         const height = embedded.height * scale;
-        const x = cellX + (cellW - width)  / 2;
+        const x = cellX + (cellW - width) / 2;
         const y = cellY + (cellH - height) / 2;
         page.drawPage(embedded, { x, y, width, height });
       }
@@ -173,6 +190,14 @@ export async function createA4LandscapePdf(file: File, labels: LabelRegion[], la
   }
 
   return output.save({ useObjectStreams: true });
+}
+
+export async function createA4LandscapePdf(
+  file: File,
+  labels: LabelRegion[],
+  labelsPerPage: LabelsPerPage = 4
+) {
+  return createA4Pdf(file, labels, labelsPerPage, "landscape");
 }
 
 export async function createIndividualLabelPdf(file: File, label: LabelRegion) {

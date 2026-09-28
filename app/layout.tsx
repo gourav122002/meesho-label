@@ -5,9 +5,14 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: "Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool", template: `%s | ${siteName}` },
-  description: "Free online tool to crop Meesho, Flipkart, and Amazon shipping labels from PDF. Arrange 4, 6 or 8 labels on one A4 page. 100% private, browser-based.",
-  keywords: ["meesho label cropper", "flipkart label cropper", "amazon label cropper", "shipping label crop tool", "meesho label with invoice", "4 labels on A4", "ship label tool", "shiplabeltool"],
+  title: { default: "ShipLabelTool — Free Label Cropper & Profit Calculator for Indian Sellers", template: `%s | ${siteName}` },
+  description: "Free tools for Indian e-commerce sellers: crop Meesho, Flipkart & Amazon shipping labels from PDF, calculate profit margins, and analyze payment sheets. 100% browser-based.",
+  keywords: [
+    "meesho label cropper", "flipkart label cropper", "amazon label cropper",
+    "shipping label crop tool", "meesho label with invoice", "4 labels on A4",
+    "meesho profit calculator", "amazon profit calculator india", "flipkart profit calculator",
+    "meesho payment analyzer", "amazon vs meesho", "shiplabeltool",
+  ],
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   icons: { icon: "/favicon.svg" },
   openGraph: {
@@ -15,14 +20,14 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: siteUrl,
     siteName: siteName,
-    title: "Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool",
-    description: "Free online tool to crop Meesho, Flipkart, and Amazon shipping labels from PDF. Arrange 4, 6 or 8 labels on one A4 page. 100% private, browser-based.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ShipLabelTool – Shipping Label Cropper for Indian Sellers" }],
+    title: "ShipLabelTool — Free Label Cropper & Profit Calculator for Indian Sellers",
+    description: "Free tools for Indian e-commerce sellers: crop Meesho, Flipkart & Amazon shipping labels, calculate profit margins, and analyze Meesho payment sheets. 100% browser-based.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ShipLabelTool – Free Tools for Indian E-Commerce Sellers" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shipping Label Cropper – Meesho, Flipkart & Amazon A4 Label Tool",
-    description: "Free tool to crop shipping labels from PDF and print 4, 6 or 8 per A4 page. 100% browser-based.",
+    title: "ShipLabelTool — Free Label Cropper & Profit Calculator for Indian Sellers",
+    description: "Free tools for Indian sellers: label cropper, profit calculators, payment analyzer. 100% browser-based.",
     images: ["/og-image.png"],
   },
 };
@@ -49,7 +54,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <strong>Label Cropper</strong>
               </div>
               <p className="footer-brand-desc">
-                Free shipping label cropper for Meesho, Flipkart &amp; Amazon sellers. 100% browser-based, no login needed.
+                Free tools for Indian e-commerce sellers — label croppers, profit calculators, and payment sheet analyzer. 100% browser-based.
               </p>
             </div>
 
@@ -62,6 +67,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <a href="/flipkart-label-cropper" className="footer-link">Flipkart Label Cropper</a>
                 <a href="/amazon-label-cropper" className="footer-link">Amazon Label Cropper</a>
                 <a href="/a4-meesho-labels" className="footer-link">A4 Multi-Label Arranger</a>
+              </nav>
+            </div>
+
+            {/* Profit Calculators col */}
+            <div className="footer-col">
+              <div className="footer-col-title">Profit Calculators</div>
+              <nav aria-label="Profit calculators footer navigation">
+                <a href="/meesho-profit-calculator" className="footer-link">Meesho Profit Calculator</a>
+                <a href="/amazon-profit-calculator" className="footer-link">Amazon Profit Calculator</a>
+                <a href="/flipkart-profit-calculator" className="footer-link">Flipkart Profit Calculator</a>
+                <a href="/myntra-profit-calculator" className="footer-link">Myntra Profit Calculator</a>
+                <a href="/meesho-payment-analyzer" className="footer-link">Payment Sheet Analyzer</a>
+                <a href="/bulk-profit-calculator" className="footer-link">Bulk Calculator</a>
+                <a href="/amazon-vs-meesho" className="footer-link">Amazon vs Meesho</a>
               </nav>
             </div>
 

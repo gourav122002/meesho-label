@@ -10,6 +10,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/meesho-label-with-invoice",
     "/a4-meesho-labels",
   ];
+  const calculatorPages = [
+    "/meesho-payment-analyzer",
+    "/meesho-profit-calculator",
+    "/amazon-profit-calculator",
+    "/flipkart-profit-calculator",
+    "/myntra-profit-calculator",
+    "/bulk-profit-calculator",
+    "/amazon-vs-meesho",
+  ];
   const blogPages = [
     "/blog/meesho-label-cropper-a4",
     "/blog/how-to-print-meesho-labels-4-on-a4",
@@ -29,6 +38,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.9,
+    })),
+    ...calculatorPages.map((path) => ({
+      url: new URL(path, siteUrl).toString(),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: path === "/meesho-payment-analyzer" ? 0.95 : 0.9,
     })),
     ...blogPages.map((path) => ({
       url: new URL(path, siteUrl).toString(),

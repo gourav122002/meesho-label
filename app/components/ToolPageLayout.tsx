@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import LabelCropper from "./LabelCropper";
 
 interface ToolPageLayoutProps {
@@ -31,11 +31,11 @@ export default function ToolPageLayout({
 }: ToolPageLayoutProps) {
   return (
     <main>
-      {/* ── Dark hero header ── */}
+      {/* Dark hero header */}
       <section className="tp-hero">
         <div className="container tp-hero-inner">
           <Link href="/" className="tp-back-link">
-            ← All Platforms
+            ← All Platform Tools
           </Link>
           <div className="tp-platform-row">
             {icon}
@@ -47,27 +47,27 @@ export default function ToolPageLayout({
         </div>
       </section>
 
-      {/* ── The actual tool ── */}
+      {/* The actual tool */}
       <section className="tp-tool-area container">
         <LabelCropper />
       </section>
 
-      {/* ── SEO benefit cards ── */}
+      {/* SEO benefit cards */}
       <section className="tp-seo-section">
         <div className="container" style={{ textAlign: "center" }}>
           <div className="lp-section-label">
             <span>Why Use This Tool</span>
           </div>
           <h2 className="lp-section-title" style={{ marginBottom: 4 }}>
-            {name} Label Printing — Made Simple
+            {name} Label Printing — Made Fast & Simple
           </h2>
           <p className="lp-section-sub">
-            No installs, no sign-up. Works 100% in your browser.
+            No software installation or account required. Runs 100% locally and securely in your browser.
           </p>
           <div className="tp-seo-grid">
             {benefits.map((b) => (
               <div key={b.title} className="tp-seo-card">
-                <div style={{ fontSize: 26, marginBottom: 8 }}>{b.emoji}</div>
+                <div style={{ fontSize: 28, marginBottom: 10 }}>{b.emoji}</div>
                 <h3>{b.title}</h3>
                 <p>{b.desc}</p>
               </div>
@@ -76,13 +76,13 @@ export default function ToolPageLayout({
         </div>
       </section>
 
-      {/* ── FAQ ── */}
+      {/* FAQ */}
       <section className="container" style={{ padding: "56px 0", maxWidth: 760 }}>
         <div className="lp-section-label" style={{ justifyContent: "flex-start" }}>
           <span>FAQs</span>
         </div>
         <h2 className="lp-section-title" style={{ textAlign: "left" }}>
-          Common Questions
+          Frequently Asked Questions
         </h2>
         <div className="tp-faq-list">
           {faqs.map((f) => (
