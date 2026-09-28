@@ -192,7 +192,7 @@ export default function LabelCropper() {
       {error && <div className="alert alert-danger" style={{ marginTop: 16 }}>⚠️ {error}</div>}
       {message && <div className="alert alert-success" style={{ marginTop: 16 }}>✓ {message}</div>}
 
-      {labels.length > 0 && (
+      {/* {labels.length > 0 && ( */}
         <div className="crop-controls-section" style={{ marginTop: 24 }}>
 
           {/* Layout chooser */}
@@ -237,7 +237,7 @@ export default function LabelCropper() {
             </button>
           </div>
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 }

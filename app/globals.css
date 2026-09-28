@@ -3655,6 +3655,55 @@
 }
 .home-hero-sub strong { color: rgba(255,255,255,0.95); }
 
+/* Hero CTA buttons */
+.home-hero-cta-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+.home-hero-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #f43397, #a855f7);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 8px 30px rgba(244,51,151,0.35);
+  transition: transform 0.18s, box-shadow 0.18s;
+  letter-spacing: -0.01em;
+}
+.home-hero-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(244,51,151,0.5);
+}
+.home-hero-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 24px;
+  background: rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.18s, border-color 0.18s;
+  letter-spacing: -0.01em;
+}
+.home-hero-btn-ghost:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.35);
+  color: #ffffff;
+}
+
 /* Stats row */
 .home-stats-row {
   display: flex;
@@ -3719,7 +3768,7 @@
 
 /* ── Platform picker section ── */
 .home-platforms-section {
-  padding: 72px 0 60px;
+  padding: 64px 0 48px;
   text-align: center;
   background: #ffffff;
 }
@@ -4064,7 +4113,7 @@ a.home-plat-link:hover {
   flex-shrink: 0;
 }
 .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
-.logo-brand { font-size: 30px; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; }
+.logo-brand { font-size: 18px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; }
 .logo-sub { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; }
 .header-nav-links { display: flex; align-items: center; gap: 2px; }
 .nav-dropdown-wrap { position: relative; }

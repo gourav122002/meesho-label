@@ -106,13 +106,23 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
+            {/* CTA */}
+            <div className="home-hero-cta-row">
+              <a href="#platforms" className="home-hero-btn-primary">
+                Choose Your Platform →
+              </a>
+              <a href="#how-it-works" className="home-hero-btn-ghost">
+                See how it works
+              </a>
+            </div>
           </div>
         </section>
 
         {/* ═══════════════════════════
             PLATFORM PICKER
         ═══════════════════════════ */}
-        <section className="home-platforms-section">
+        <section id="platforms" className="home-platforms-section">
           <div className="container">
             <div className="home-section-eyebrow">Choose Your Platform</div>
             <h2 className="home-section-title">Select Your Marketplace to Get Started</h2>
@@ -126,7 +136,7 @@ export default function Home() {
         {/* ═══════════════════════════
             HOW IT WORKS
         ═══════════════════════════ */}
-        <section className="home-alt-section">
+        <section id="how-it-works" className="home-alt-section">
           <div className="container">
             <div className="home-section-eyebrow">Simple 4 Steps</div>
             <h2 className="home-section-title">How It Works</h2>
