@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { siteName, siteUrl } from "../lib/site";
 import HeaderNav from "./components/HeaderNav";
 import "./globals.css";
@@ -37,6 +38,12 @@ export const metadata: Metadata = {
     description: "Free tools for Indian e-commerce sellers: crop Meesho, Flipkart & Amazon shipping labels, calculate profit margins, and analyze Meesho payment sheets. 100% browser-based.",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "ShipLabelTool – Free Tools for Indian E-Commerce Sellers" }],
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: {
+      "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION || "",
+    },
+  },
   twitter: {
     card: "summary_large_image",
     title: "ShipLabelTool — Free Label Cropper & Profit Calculator for Indian Sellers",
@@ -55,6 +62,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
         <HeaderNav />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
         {children}
