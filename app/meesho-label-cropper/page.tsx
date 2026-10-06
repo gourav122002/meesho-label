@@ -47,6 +47,14 @@ export default function MeeshoPage() {
         path="/meesho-label-cropper"
         title="Meesho Label Cropper – Free Online PDF Shipping Label Tool"
         description="Automatically crop Meesho shipping labels from bulk order PDFs. Arrange 4, 6 or 8 labels on one A4 sheet. 100% private and browser-based."
+        appName="Meesho Label Cropper"
+        faqs={[
+          { q: "Which PDF do I upload?", a: "Download your bulk orders PDF from the Meesho Supplier Panel → Orders section. Upload that PDF directly here." },
+          { q: "What paper size should I use when printing?", a: "Standard A4 (210 × 297 mm). Set your printer to A4 landscape, no margins, scale = 100%." },
+          { q: "Why is the invoice not being detected?", a: "Make sure you're uploading the original Meesho PDF (not a photo or re-saved file). The tool reads the text 'TAX INVOICE' to find the cut boundary." },
+          { q: "Can I print on a thermal label printer?", a: "Yes. Use the 'Test 1 label' button to download a single label page and test your thermal printer before doing the full batch." },
+          { q: "Is my customer data safe?", a: "Yes. All processing happens inside your browser. Customer names, addresses, and phone numbers are never sent to any server or stored anywhere." },
+        ]}
       />
       <ToolPageLayout
         name="Meesho"

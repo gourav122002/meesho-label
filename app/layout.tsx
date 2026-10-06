@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { siteName, siteUrl } from "../lib/site";
 import HeaderNav from "./components/HeaderNav";
 import "./globals.css";
@@ -14,7 +16,18 @@ export const metadata: Metadata = {
     "meesho payment analyzer", "amazon vs meesho", "shiplabeltool",
   ],
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
-  icons: { icon: "/favicon.svg" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo.png", type: "image/png" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -49,10 +62,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <div className="container footer-main">
             {/* Brand col */}
             <div className="footer-col">
-              <div className="footer-brand">
-                <span className="brand-mark" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", marginRight: 8 }}>✂️</span>
-                <strong>Label Cropper</strong>
-              </div>
+              <Link href="/" className="footer-brand-link" style={{ display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", marginBottom: "12px" }}>
+                <Image
+                  src="/logo.png"
+                  alt="ShipLabelTool"
+                  width={34}
+                  height={34}
+                  style={{ height: "34px", width: "34px", objectFit: "contain", borderRadius: "8px" }}
+                />
+                <Image
+                  src="/logo-name.png"
+                  alt="ShipLabelTool"
+                  width={125}
+                  height={22}
+                  style={{ height: "22px", width: "auto", objectFit: "contain" }}
+                />
+              </Link>
               <p className="footer-brand-desc">
                 Free tools for Indian e-commerce sellers — label croppers, profit calculators, and payment sheet analyzer. 100% browser-based.
               </p>
@@ -107,7 +132,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
           <div className="footer-bottom">
             <div className="container footer-bottom-inner">
-              <span>© {new Date().getFullYear()} Label Cropper. All rights reserved.</span>
+              <span>© {new Date().getFullYear()} ShipLabelTool. All rights reserved.</span>
               <span>Made for Indian E-Commerce Sellers 🇮🇳</span>
             </div>
           </div>

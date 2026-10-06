@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SeoJsonLd from "../components/SeoJsonLd";
 import ToolPageLayout from "../components/ToolPageLayout";
+import FlipkartLabelCropper from "../components/FlipkartLabelCropper";
 
 export const metadata: Metadata = {
   title: "Flipkart Label Cropper – Free A4 Shipping Label PDF Tool",
@@ -47,6 +48,14 @@ export default function FlipkartPage() {
         path="/flipkart-label-cropper"
         title="Flipkart Label Cropper – Free A4 Shipping Label PDF Tool"
         description="Crop and arrange Flipkart shipping labels from bulk order PDFs. Print 4, 6 or 8 labels on one A4 page. Completely free and browser-based."
+        appName="Flipkart Label Cropper"
+        faqs={[
+          { q: "Which Flipkart PDF should I upload?", a: "Download the bulk shipping label PDF from your Flipkart Seller Hub under Orders → Manage Orders. Upload that PDF here." },
+          { q: "What print settings should I use for Flipkart labels?", a: "Select A4 paper, portrait orientation, no margins, and 100% scale in your printer settings." },
+          { q: "Is my customer data safe?", a: "Yes. All PDF processing happens locally in your web browser. No data is uploaded to any server." },
+          { q: "Can I choose how many labels go on each page?", a: "Yes. After uploading, use the layout selector to choose 4, 6, or 8 labels per A4 page." },
+          { q: "Does the Flipkart label cropper work on mobile?", a: "Yes. The tool works in any modern browser including mobile Chrome and Safari. However, printing is easiest from a desktop or laptop." },
+        ]}
       />
       <ToolPageLayout
         name="Flipkart"
@@ -79,7 +88,7 @@ export default function FlipkartPage() {
           },
           {
             q: "What print settings should I use?",
-            a: "Select A4 paper, landscape orientation, no margins, and 100% scale in your printer settings.",
+            a: "Select A4 paper, portrait orientation, no margins, and 100% scale in your printer settings.",
           },
           {
             q: "Is my customer data safe?",
@@ -90,6 +99,7 @@ export default function FlipkartPage() {
             a: "Yes. After uploading, use the layout selector to choose 4, 6, or 8 labels per A4 page.",
           },
         ]}
+        cropper={<FlipkartLabelCropper />}
       />
     </>
   );

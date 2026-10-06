@@ -2,22 +2,20 @@
 
 import { useRef, useState } from "react";
 import {
-  createA4Pdf,
-  createIndividualLabelPdf,
+  createFlipkartA4Pdf,
+  createFlipkartIndividualPdf,
   downloadBytes,
-  inspectMeeshoPdf,
-  type LabelRegion,
+  inspectFlipkartPdf,
+  type FlipkartLabelRegion,
   type LabelsPerPage,
-} from "../../lib/pdf-cropper";
+} from "../../lib/flipkart-pdf-cropper";
 
 interface LayoutConfig {
   value: LabelsPerPage;
   label: string;
   gridPortrait: string;
-  gridLandscape: string;
   badge?: string;
   descPortrait: string;
-  descLandscape: string;
 }
 
 const LAYOUT_CONFIGS: LayoutConfig[] = [
@@ -25,41 +23,33 @@ const LAYOUT_CONFIGS: LayoutConfig[] = [
     value: 4,
     label: "4 Labels / Page",
     gridPortrait: "2 × 2",
-    gridLandscape: "2 × 2",
     badge: "Recommended",
     descPortrait: "Standard size • Easy to cut with scissors",
-    descLandscape: "Standard size • Easy to cut with scissors",
   },
   {
     value: 6,
     label: "6 Labels / Page",
     gridPortrait: "2 × 3",
-    gridLandscape: "3 × 2",
     badge: "Most Popular",
     descPortrait: "Portrait 2×3 grid • Saves 33% paper",
-    descLandscape: "Landscape 3×2 grid • Saves 33% paper",
   },
   {
     value: 8,
     label: "8 Labels / Page",
     gridPortrait: "2 × 4",
-    gridLandscape: "4 × 2",
     badge: "Max Savings",
     descPortrait: "Portrait 2×4 grid • Saves 50% paper",
-    descLandscape: "Landscape 4×2 grid • Saves 50% paper",
   },
 ];
 
-export default function LabelCropper() {
+export default function FlipkartLabelCropper() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [labels, setLabels] = useState<LabelRegion[]>([]);
+  const [labels, setLabels] = useState<FlipkartLabelRegion[]>([]);
   const [working, setWorking] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
-  const orientation = "portrait" as const;
   const [selectedLayout, setSelectedLayout] = useState<LabelsPerPage>(4);
   const [downloadingFormat, setDownloadingFormat] = useState<string | null>(null);
 
@@ -74,16 +64,16 @@ export default function LabelCropper() {
     setWorking(true);
 
     try {
-      const detected = await inspectMeeshoPdf(selected);
+      const detected = await inspectFlipkartPdf(selected);
 
       if (detected.length === 0) {
         setError(
-          "Could not detect shipping labels in this PDF. Please check if it is a valid marketplace shipping label file."
+          "Could not detect Flipkart shipping labels in this PDF. Please check if it is a valid Flipkart Seller Hub bulk order PDF."
         );
         setLabels([]);
       } else {
         setLabels(detected);
-        // setMessage(`Successfully detected ${detected.length} shipping label${detected.length === 1 ? "" : "s"}.`);
+        setMessage(`Successfully detected ${detected.length} label${detected.length === 1 ? "" : "s"}.`);
       }
     } catch (e) {
       setError("Error processing PDF: " + String(e));
@@ -96,13 +86,10 @@ export default function LabelCropper() {
   async function downloadA4() {
     if (!file || labels.length === 0) return;
     setDownloadingFormat("a4");
-    // Derive orientation at call time to avoid stale closure.
-    // 6-up always uses landscape A4 (3×2 grid); 4-up and 8-up use portrait A4.
-    const pageOrientation = selectedLayout === 6 ? "portrait" : "portrait";
     try {
-      const result = await createA4Pdf(file, labels, selectedLayout, pageOrientation);
+      const result = await createFlipkartA4Pdf(file, labels, selectedLayout, "portrait");
       const baseName = file.name.replace(/\.pdf$/i, "");
-      downloadBytes(result, `${baseName}-A4-${orientation}-${selectedLayout}up.pdf`);
+      downloadBytes(result, `${baseName}-A4-${selectedLayout}up.pdf`);
     } catch (e) {
       alert("Error generating A4 PDF: " + String(e));
     } finally {
@@ -115,7 +102,7 @@ export default function LabelCropper() {
     setDownloadingFormat("individual");
     try {
       for (let i = 0; i < labels.length; i++) {
-        const result = await createIndividualLabelPdf(file, labels[i]);
+        const result = await createFlipkartIndividualPdf(file, labels[i]);
         const baseName = file.name.replace(/\.pdf$/i, "");
         const labelNum = String(i + 1).padStart(2, "0");
         downloadBytes(result, `${baseName}-label-${labelNum}.pdf`);
@@ -163,7 +150,7 @@ export default function LabelCropper() {
           {working ? (
             <div className="spinner" />
           ) : file ? (
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2874F0" strokeWidth="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
               <polyline points="14 2 14 8 20 8" />
               <polyline points="9 15 12 18 15 15" />
@@ -178,30 +165,28 @@ export default function LabelCropper() {
         </div>
 
         <div className="drop-title">
-          {file ? file.name : "Select or Drop Marketplace Shipping Labels PDF"}
+          {file ? file.name : "Select or Drop Flipkart Shipping Label PDF"}
         </div>
         <div className="drop-subtitle">
           {working
-            ? "Analyzing and detecting label crop bounds..."
+            ? "Analyzing labels and detecting crop bounds..."
             : file
               ? `${(file.size / 1024).toFixed(0)} KB • Click to choose a different PDF`
-              : "Supports Meesho, Flipkart, and Amazon shipping label PDFs"}
+              : "Upload your Flipkart Seller Hub bulk order PDF"}
         </div>
       </div>
 
       {error && <div className="alert alert-danger" style={{ marginTop: 16 }}>⚠️ {error}</div>}
-      {message && <div className="alert alert-success" style={{ marginTop: 16 }}>✓ {message}</div>}
+      {message && !error && labels.length > 0 && (
+        <div className="alert alert-success" style={{ marginTop: 16 }}>✓ {message}</div>
+      )}
 
-      {/* {labels.length > 0 && ( */}
       <div className="crop-controls-section" style={{ marginTop: 24 }}>
-
         {/* Layout chooser */}
         <div className="section-subtitle">Choose A4 Print Layout:</div>
         <div className="layout-options-grid">
           {LAYOUT_CONFIGS.map((cfg) => {
             const isSelected = selectedLayout === cfg.value;
-            const gridLabel = orientation === "portrait" ? cfg.gridPortrait : cfg.gridLandscape;
-            const descLabel = orientation === "portrait" ? cfg.descPortrait : cfg.descLandscape;
             return (
               <div
                 key={cfg.value}
@@ -210,8 +195,8 @@ export default function LabelCropper() {
               >
                 {cfg.badge && <span className="layout-badge">{cfg.badge}</span>}
                 <div className="layout-card-title">{cfg.label}</div>
-                <div className="layout-card-grid">{gridLabel} Grid</div>
-                <div className="layout-card-desc">{descLabel}</div>
+                <div className="layout-card-grid">{cfg.gridPortrait} Grid</div>
+                <div className="layout-card-desc">{cfg.descPortrait}</div>
               </div>
             );
           })}
@@ -225,7 +210,9 @@ export default function LabelCropper() {
             onClick={downloadA4}
             disabled={downloadingFormat !== null}
           >
-            {downloadingFormat === "a4" ? "Download Shipping Label PDF..." : `📥 Download Shipping Label PDF `}
+            {downloadingFormat === "a4"
+              ? "Generating A4 PDF..."
+              : `📥 Download A4 Label PDF`}
           </button>
           <button
             type="button"
@@ -233,11 +220,12 @@ export default function LabelCropper() {
             onClick={downloadIndividual}
             disabled={downloadingFormat !== null}
           >
-            {downloadingFormat === "individual" ? "Generating..." : "🏷️ Download Thermal 4×6 Labels"}
+            {downloadingFormat === "individual"
+              ? "Generating..."
+              : "🏷️ Download Thermal 4×6 Labels"}
           </button>
         </div>
       </div>
-      {/* )} */}
     </div>
   );
 }

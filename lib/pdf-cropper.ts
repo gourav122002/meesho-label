@@ -111,8 +111,8 @@ const LAYOUT_MAP_PORTRAIT: Record<LabelsPerPage, LayoutConfig> = {
 
 const LAYOUT_MAP_LANDSCAPE: Record<LabelsPerPage, LayoutConfig> = {
   4: { cols: 2, rows: 2, vertical: false }, // 2×2 landscape cells — labels horizontal
-  6: { cols: 3, rows: 2, vertical: true  }, // 3×2 landscape cells — labels rotated vertical
-  8: { cols: 4, rows: 2, vertical: true  }, // 4×2 landscape cells — labels rotated vertical
+  6: { cols: 3, rows: 2, vertical: true }, // 3×2 landscape cells — labels rotated vertical
+  8: { cols: 4, rows: 2, vertical: true }, // 4×2 landscape cells — labels rotated vertical
 };
 
 export async function createA4Pdf(

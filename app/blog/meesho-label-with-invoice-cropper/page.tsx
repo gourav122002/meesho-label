@@ -32,7 +32,7 @@ const articleSchema = {
   publisher: {
     "@type": "Organization",
     name: "ShipLabelTool",
-    logo: { "@type": "ImageObject", url: "https://www.shiplabeltool.com/favicon.svg" },
+    logo: { "@type": "ImageObject", url: "https://www.shiplabeltool.com/logo.png" },
   },
   mainEntityOfPage: { "@type": "WebPage", "@id": "https://www.shiplabeltool.com/blog/meesho-label-with-invoice-cropper" },
 };

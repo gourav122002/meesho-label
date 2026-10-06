@@ -41,7 +41,7 @@ export default function SeoJsonLd({ path, title, description, appName, faqs }: S
       "@id": `${siteUrl}/#organization`,
       name: siteName,
       url: siteUrl,
-      logo: { "@type": "ImageObject", url: `${siteUrl}/favicon.svg` },
+      logo: { "@type": "ImageObject", url: `${siteUrl}/logo.png` },
     });
   }
 

@@ -48,6 +48,13 @@ export default function AmazonPage() {
         path="/amazon-label-cropper"
         title="Amazon Label Cropper – Free A4 Shipping Label PDF Tool"
         description="Crop and arrange Amazon seller shipping labels from PDF files. Print 4, 6 or 8 labels per A4 page. Free and browser-based."
+        appName="Amazon Label Cropper"
+        faqs={[
+          { q: "Which Amazon PDF should I upload?", a: "Download the shipping label PDF from your Amazon Seller Central → Manage Orders → Print Shipping Labels. Upload that file here." },
+          { q: "Does it work with Amazon Easy Ship labels?", a: "Yes. Upload the Easy Ship or Seller Flex label PDF and the tool will crop and arrange the labels on A4 sheets." },
+          { q: "What printer settings should I use?", a: "A4 paper, landscape orientation, 100% scale, no margins. Works on any standard inkjet or laser printer." },
+          { q: "Is there a limit on the number of labels?", a: "No hard limit. The tool runs in your browser and processes each page locally, so it works for any order volume." },
+        ]}
       />
       <ToolPageLayout
         name="Amazon"

@@ -47,6 +47,13 @@ export default function MyntraPage() {
         path="/myntra-label-cropper"
         title="Myntra Label Cropper – Free A4 Shipping Label PDF Tool"
         description="Crop and arrange Myntra shipping labels from bulk order PDFs. Print 4, 6 or 8 labels on one A4 page. Completely free and browser-based."
+        appName="Myntra Label Cropper"
+        faqs={[
+          { q: "Which Myntra PDF should I upload?", a: "Download the bulk shipping label PDF from your Myntra Partner Portal under Orders → Manage Orders. Upload that PDF directly here." },
+          { q: "What print settings should I use?", a: "Select A4 paper, landscape orientation, no margins, and 100% scale in your printer settings." },
+          { q: "Is my customer data safe?", a: "Yes. All PDF processing happens locally in your web browser. No data is uploaded to any server." },
+          { q: "Can I print on a thermal label printer?", a: "Yes. Use the 'Download Thermal 4×6 Labels' button to download individual label pages for thermal printers." },
+        ]}
       />
       <ToolPageLayout
         name="Myntra"

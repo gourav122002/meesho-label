@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 const CALCULATORS = [
@@ -187,18 +188,23 @@ export default function HeaderNav() {
     <header className="header">
       <div className="container header-inner">
         {/* Logo */}
-        <Link href="/" className="logo-link">
-          <div className="logo-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="18" height="18" rx="4" fill="#2563eb" />
-              <path d="M7 17V7h4a3 3 0 0 1 0 6H7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M14 13l3 4" stroke="white" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </div>
-          <div className="logo-text">
-            <span className="logo-brand">Ship Label Tool</span>
-            {/* <span className="logo-sub">Seller Suite</span> */}
-          </div>
+        <Link href="/" className="logo-link" aria-label="ShipLabelTool Homepage">
+          <Image
+            src="/logo.png"
+            alt="ShipLabelTool Logo"
+            width={38}
+            height={38}
+            priority
+            className="header-logo-image"
+          />
+          <Image
+            src="/logo-name.png"
+            alt="ShipLabelTool"
+            width={140}
+            height={24}
+            priority
+            className="header-logo-name-image"
+          />
         </Link>
 
         {/* Desktop Navigation */}

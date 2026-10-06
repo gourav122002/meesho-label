@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import LabelCropper from "./LabelCropper";
 
 interface ToolPageLayoutProps {
@@ -18,6 +18,8 @@ interface ToolPageLayoutProps {
   benefits: { emoji: string; title: string; desc: string }[];
   /** FAQ items */
   faqs: { q: string; a: string }[];
+  /** Optional custom cropper component; defaults to <LabelCropper /> */
+  cropper?: React.ReactNode;
 }
 
 export default function ToolPageLayout({
@@ -28,6 +30,7 @@ export default function ToolPageLayout({
   subtext,
   benefits,
   faqs,
+  cropper,
 }: ToolPageLayoutProps) {
   return (
     <main>
@@ -49,7 +52,7 @@ export default function ToolPageLayout({
 
       {/* The actual tool */}
       <section className="tp-tool-area container">
-        <LabelCropper />
+        {cropper ?? <LabelCropper />}
       </section>
 
       {/* SEO benefit cards */}
