@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useRef, useState, useCallback } from "react";
 
@@ -56,8 +56,12 @@ export default function UploadZone({ onFile, loading, error }: UploadZoneProps) 
     return (
       <div className="analyzer-loading-state">
         <div className="analyzer-loading-spinner" />
-        <h3>Processing Meesho Sheets...</h3>
-        <p>Calculating order settlements, return shipping penalties, courier RTOs and SKU margins.</p>
+        <h3 style={{ fontSize: "1.2rem", fontWeight: "800", margin: "1rem 0 0.4rem", color: "var(--text-primary, #0f172a)" }}>
+          Processing Meesho Sheets...
+        </h3>
+        <p style={{ fontSize: "0.85rem", color: "var(--text-muted, #64748b)", maxWidth: "460px", margin: "0 auto", lineHeight: 1.5 }}>
+          Calculating order settlements, return shipping penalties, courier RTOs, and SKU unit economics.
+        </p>
       </div>
     );
   }
@@ -65,9 +69,13 @@ export default function UploadZone({ onFile, loading, error }: UploadZoneProps) 
   return (
     <div className="analyzer-upload-outer">
       <div className="analyzer-upload-header">
-        <span className="analyzer-hero-badge">⚡ Instant 100% Private Browser Analysis</span>
-        <h2>Upload Your Meesho Reports</h2>
-        <p>
+        <span className="analyzer-hero-badge">
+          ⚡ Instant 100% Private Browser Analysis
+        </span>
+        <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 1.85rem)", fontWeight: "900", letterSpacing: "-0.03em", margin: "0.5rem 0 0.4rem", color: "var(--text-primary, #0f172a)" }}>
+          Upload Your Meesho Reports
+        </h2>
+        <p style={{ fontSize: "0.9rem", color: "var(--text-secondary, #475569)", maxWidth: "620px", margin: "0 auto", lineHeight: 1.55 }}>
           Upload your <strong>Payment Sheet (.xlsx)</strong> to calculate true net profit and penalties.
           Optionally add your <strong>Return Sheet (.csv)</strong> to unlock real buyer return reasons and courier performance.
         </p>
@@ -95,22 +103,28 @@ export default function UploadZone({ onFile, loading, error }: UploadZoneProps) 
           tabIndex={0}
           onKeyDown={(e) => e.key === "Enter" && paymentInputRef.current?.click()}
         >
-          <div className="drop-card-badge drop-card-badge-required">
-            {paymentFile ? "✓ Payment Sheet Ready" : "Step 1: Payment Report (Required)"}
+          <div className="drop-card-badge-row">
+            <span className={`drop-card-badge ${paymentFile ? "badge-success" : "badge-required"}`}>
+              {paymentFile ? "✓ Payment Sheet Ready" : "Step 1: Payment Report (Required)"}
+            </span>
           </div>
+
           <div className="drop-card-body">
-            <span className="drop-card-icon">{paymentFile ? "📊" : "📥"}</span>
-            <div>
-              <strong className="drop-card-name">
+            <div className={`drop-card-icon-wrap ${paymentFile ? "icon-wrap-ready" : ""}`}>
+              <span className="drop-card-icon">{paymentFile ? "📊" : "📥"}</span>
+            </div>
+            <div className="drop-card-info">
+              <strong className="drop-card-name" title={paymentFile ? paymentFile.name : undefined}>
                 {paymentFile ? paymentFile.name : "Select Meesho Payment Report"}
               </strong>
               <p className="drop-card-hint">
                 {paymentFile
-                  ? `File loaded (${formatBytes(paymentFile.size)}) — Click to replace`
+                  ? `File loaded (${formatBytes(paymentFile.size)}) · Click to replace`
                   : "Meesho Supplier Panel → Payments → Download Excel (.xlsx / .csv)"}
               </p>
             </div>
           </div>
+
           <div className="drop-card-footer">
             <span className="drop-card-cta">
               {paymentFile ? "🔄 Replace File" : "📁 Choose .xlsx / .csv file"}
@@ -151,22 +165,28 @@ export default function UploadZone({ onFile, loading, error }: UploadZoneProps) 
           tabIndex={0}
           onKeyDown={(e) => e.key === "Enter" && returnInputRef.current?.click()}
         >
-          <div className="drop-card-badge drop-card-badge-optional">
-            {returnFile ? "✓ Return Sheet Attached" : "Step 2: Return Sheet (Optional)"}
+          <div className="drop-card-badge-row">
+            <span className={`drop-card-badge ${returnFile ? "badge-success" : "badge-optional"}`}>
+              {returnFile ? "✓ Return Sheet Attached" : "Step 2: Return Sheet (Optional)"}
+            </span>
           </div>
+
           <div className="drop-card-body">
-            <span className="drop-card-icon">{returnFile ? "📦" : "📑"}</span>
-            <div>
-              <strong className="drop-card-name">
+            <div className={`drop-card-icon-wrap ${returnFile ? "icon-wrap-ready" : ""}`}>
+              <span className="drop-card-icon">{returnFile ? "📦" : "📑"}</span>
+            </div>
+            <div className="drop-card-info">
+              <strong className="drop-card-name" title={returnFile ? returnFile.name : undefined}>
                 {returnFile ? returnFile.name : "Attach Meesho Return CSV"}
               </strong>
               <p className="drop-card-hint">
                 {returnFile
-                  ? `Attached (${formatBytes(returnFile.size)}) — Real return reasons unlocked!`
+                  ? `Attached (${formatBytes(returnFile.size)}) · Real return reasons unlocked!`
                   : "Meesho Supplier Panel → Returns → Export CSV. Unlocks exact buyer feedback & courier RTO."}
               </p>
             </div>
           </div>
+
           <div className="drop-card-footer">
             <span className="drop-card-cta">
               {returnFile ? "🔄 Replace File" : "📁 Choose .csv file"}
@@ -190,7 +210,7 @@ export default function UploadZone({ onFile, loading, error }: UploadZoneProps) 
       <div className="analyzer-upload-actions">
         <button
           type="button"
-          className="btn btn-primary btn-lg"
+          className="btn btn-primary btn-analyze-action"
           onClick={handleAnalyze}
           disabled={!paymentFile}
           id="analyzer-analyze-btn"
@@ -203,7 +223,7 @@ export default function UploadZone({ onFile, loading, error }: UploadZoneProps) 
         </button>
         <button
           type="button"
-          className="btn btn-secondary btn-lg"
+          className="btn btn-secondary btn-sample-action"
           onClick={loadSampleData}
           id="analyzer-sample-btn"
         >
