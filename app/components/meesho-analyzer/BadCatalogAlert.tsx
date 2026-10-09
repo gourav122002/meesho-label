@@ -1,142 +1,199 @@
-﻿import type { AnalysisResult } from "../../../lib/meesho-analyzer/types";
+'use client';
+import type { ProductMetrics } from '../../../lib/meesho-analyzer/types';
 
-interface Props {
-  badCatalog: AnalysisResult["badCatalog"];
-}
-
-function fmt(n: number): string {
+function INR(n: number) {
   const abs = Math.abs(n);
-  const sign = n < 0 ? "-" : "";
-  return `${sign}₹${abs.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`;
+  if (abs >= 100000) return (n < 0 ? '-' : '') + '₹' + (abs / 100000).toFixed(1) + 'L';
+  if (abs >= 1000) return (n < 0 ? '-' : '') + '₹' + (abs / 1000).toFixed(1) + 'K';
+  return (n < 0 ? '-₹' : '₹') + abs.toFixed(0);
 }
 
-const SECTIONS = [
+interface Section {
+  key: 'remove' | 'pause' | 'fix' | 'scale';
+  title: string;
+  subtitle: string;
+  icon: string;
+  color: string;
+  action: string;
+  actionBg: string;
+}
+
+const SECTIONS: Section[] = [
   {
-    key: "remove" as const,
-    title: "Remove Immediately",
-    icon: "🚨",
-    borderColor: "#ef4444",
-    bg: "#fff1f2",
-    badgeBg: "#fee2e2",
-    badgeColor: "#dc2626",
-    desc: "These SKUs have high return rates (>25%) and are actively losing you money in shipping penalties. Stop selling them immediately.",
+    key: 'remove',
+    title: '🛑 Stop & Remove Immediately',
+    subtitle: 'High customer return rate causing heavy return fees (~₹175 each). Stop selling to eliminate losses.',
+    icon: '🛑',
+    color: 'var(--danger)',
+    action: 'Stop SKU',
+    actionBg: 'var(--danger-bg)',
   },
   {
-    key: "pause" as const,
-    title: "Pause & Investigate",
-    icon: "⏸️",
-    borderColor: "#f59e0b",
-    bg: "#fffbeb",
-    badgeBg: "#fef3c7",
-    badgeColor: "#d97706",
-    desc: "High courier RTO rate (>35%) — orders failing at customer doorstep. Check pincodes, buyer fake rate, and pause COD.",
+    key: 'pause',
+    title: '⏸️ High Courier RTO (Doorstep Rejections)',
+    subtitle: 'High RTO rate before customer delivery. Verify buyer COD / pin code serviceability.',
+    icon: '⏸️',
+    color: 'var(--warning)',
+    action: 'Pause SKU',
+    actionBg: 'var(--warning-bg)',
   },
   {
-    key: "fix" as const,
-    title: "Fix Listing / Sizing",
-    icon: "🔧",
-    borderColor: "#eab308",
-    bg: "#fefce8",
-    badgeBg: "#fef9c3",
-    badgeColor: "#a16207",
-    desc: "Borderline return rates (15%–25%). Improve size chart accuracy, upload real fabric photos, and fix product descriptions.",
+    key: 'fix',
+    title: '🔧 Fix Catalog & Sizing',
+    subtitle: 'Moderate returns. Update product images, size chart, or fabric description to reduce returns.',
+    icon: '🔧',
+    color: '#0284c7',
+    action: 'Improve Catalog',
+    actionBg: 'rgba(2,132,199,0.12)',
   },
   {
-    key: "scale" as const,
-    title: "Scale with Ads & Stock",
-    icon: "🚀",
-    borderColor: "#10b981",
-    bg: "#f0fdf4",
-    badgeBg: "#dcfce7",
-    badgeColor: "#15803d",
-    desc: "Top profitable winners with low returns (<10%) and steady deliveries. Run Meesho Ads and increase warehouse stock.",
+    key: 'scale',
+    title: '🚀 Scale Up Winning Catalogs',
+    subtitle: 'High delivery rate (>65%), low returns (<10%), solid profit. Run Meesho Ads and increase stock.',
+    icon: '🚀',
+    color: 'var(--success)',
+    action: 'Scale with Ads',
+    actionBg: 'var(--success-bg)',
   },
 ];
 
-export default function BadCatalogAlert({ badCatalog }: Props) {
-  const totalAlerts =
-    badCatalog.remove.length + badCatalog.pause.length + badCatalog.fix.length;
+interface Props {
+  badCatalog: {
+    remove: ProductMetrics[];
+    pause: ProductMetrics[];
+    fix: ProductMetrics[];
+    scale: ProductMetrics[];
+  };
+}
 
-  if (totalAlerts === 0 && badCatalog.scale.length === 0) {
-    return (
-      <div className="alert alert-success">
-        <span className="alert-icon">✓</span>
+function ProductCard({
+  product,
+  color,
+  actionText,
+  actionBg,
+}: {
+  product: ProductMetrics;
+  color: string;
+  actionText: string;
+  actionBg: string;
+}) {
+  return (
+    <div
+      style={{
+        padding: '0.875rem 1rem',
+        borderRadius: '12px',
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border)',
+        boxShadow: 'var(--glass-card-shadow)',
+        transition: 'transform 0.15s ease',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '0.5rem' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontWeight: '800', fontSize: '0.875rem', color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {product.productName}
+          </div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
+            SKU: <strong style={{ color: 'var(--accent-purple)' }}>{product.sku}</strong> {product.catalogId ? `· Cat: ${product.catalogId}` : ''}
+          </div>
+        </div>
+        <span style={{ padding: '0.2rem 0.55rem', borderRadius: '999px', background: actionBg, color, fontSize: '0.7rem', fontWeight: '800', whiteSpace: 'nowrap' }}>
+          {actionText}
+        </span>
+      </div>
+
+      {/* Metrics strip */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.4rem', marginBottom: '0.5rem', background: 'var(--bg-secondary)', padding: '0.45rem', borderRadius: '8px' }}>
         <div>
-          <strong>All catalogs are performing well!</strong>
-          <p>No critical loss-making or high-return products detected in this payment sheet.</p>
+          <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)', fontWeight: '700' }}>ORDERS</div>
+          <div style={{ fontSize: '0.8rem', fontWeight: '800', color: 'var(--text-primary)' }}>{product.totalOrders}</div>
+          <div style={{ fontSize: '0.65rem', color: 'var(--success)' }}>{product.deliveredOrders} Del</div>
+        </div>
+
+        <div>
+          <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)', fontWeight: '700' }}>CUST RETURN</div>
+          <div style={{ fontSize: '0.8rem', fontWeight: '800', color: product.customerReturnRate > 20 ? 'var(--danger)' : 'var(--warning)' }}>
+            {product.customerReturns} ({product.customerReturnRate}%)
+          </div>
+          <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>RTO: {product.rtoOrders}</div>
+        </div>
+
+        <div>
+          <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)', fontWeight: '700' }}>RETURN FEE</div>
+          <div style={{ fontSize: '0.8rem', fontWeight: '800', color: product.returnShippingDeducted < 0 ? 'var(--danger)' : 'var(--text-muted)' }}>
+            {INR(product.returnShippingDeducted)}
+          </div>
+        </div>
+
+        <div>
+          <div style={{ fontSize: '0.62rem', color: 'var(--text-muted)', fontWeight: '700' }}>NET PROFIT</div>
+          <div style={{ fontSize: '0.8rem', fontWeight: '800', color: product.netProfit >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+            {INR(product.netProfit)}
+          </div>
         </div>
       </div>
-    );
-  }
+
+      {/* Reason Box */}
+      <div style={{
+        fontSize: '0.72rem', color: 'var(--text-secondary)', lineHeight: 1.45,
+        padding: '0.35rem 0.55rem', borderRadius: '6px', background: 'var(--bg-card-hover)',
+        borderLeft: `3px solid ${color}`,
+      }}>
+        💡 {product.recommendationReason}
+      </div>
+    </div>
+  );
+}
+
+export default function BadCatalogAlert({ badCatalog }: Props) {
+  const totalBad = badCatalog.remove.length + badCatalog.pause.length + badCatalog.fix.length;
 
   return (
-    <div className="bad-catalog-sections">
-      {SECTIONS.map((sec) => {
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      {/* Summary Banner */}
+      <div style={{
+        padding: '0.875rem 1.1rem', borderRadius: '12px',
+        background: 'var(--bg-card)', border: '1px solid var(--border)',
+        boxShadow: 'var(--glass-card-shadow)',
+        display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap',
+      }}>
+        <div style={{ fontSize: '2rem' }}>🎯</div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: '800', color: 'var(--text-primary)', fontSize: '0.95rem' }}>
+            Catalog Optimization &amp; Action Plan
+          </div>
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.15rem' }}>
+            {badCatalog.remove.length} SKUs to remove · {badCatalog.pause.length} to pause · {badCatalog.fix.length} to fix · {badCatalog.scale.length} winning SKUs
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {[
+            { count: badCatalog.remove.length, label: 'Remove', color: 'var(--danger)', bg: 'var(--danger-bg)' },
+            { count: badCatalog.pause.length, label: 'Pause', color: 'var(--warning)', bg: 'var(--warning-bg)' },
+            { count: badCatalog.fix.length, label: 'Fix', color: '#0284c7', bg: 'rgba(2,132,199,0.12)' },
+            { count: badCatalog.scale.length, label: 'Scale Up', color: 'var(--success)', bg: 'var(--success-bg)' },
+          ].map(s => (
+            <div key={s.label} style={{ textAlign: 'center', minWidth: '50px', background: s.bg, padding: '0.3rem 0.55rem', borderRadius: '8px' }}>
+              <div style={{ fontSize: '1.2rem', fontWeight: '800', color: s.color }}>{s.count}</div>
+              <div style={{ fontSize: '0.65rem', color: s.color, fontWeight: '700' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Sections */}
+      {SECTIONS.map(sec => {
         const items = badCatalog[sec.key];
         if (items.length === 0) return null;
         return (
-          <div
-            key={sec.key}
-            className="bad-catalog-section"
-            style={{ borderLeft: `4px solid ${sec.borderColor}`, background: sec.bg }}
-          >
-            <div className="bad-catalog-section-header">
-              <span className="bad-section-icon">{sec.icon}</span>
-              <strong className="bad-section-title">{sec.title}</strong>
-              <span
-                className="bad-count-badge"
-                style={{ background: sec.badgeBg, color: sec.badgeColor }}
-              >
-                {items.length} {items.length === 1 ? "Product" : "Products"}
-              </span>
+          <div key={sec.key} style={{ padding: '1rem', borderRadius: '14px', background: 'var(--bg-card)', border: '1px solid var(--border)', boxShadow: 'var(--glass-card-shadow)' }}>
+            <div style={{ marginBottom: '0.75rem' }}>
+              <h3 style={{ fontWeight: '800', fontSize: '0.95rem', color: sec.color, margin: '0 0 0.15rem' }}>{sec.title}</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', margin: 0 }}>{sec.subtitle}</p>
             </div>
-            <p className="section-hint" style={{ marginBottom: 16 }}>
-              {sec.desc}
-            </p>
-            <div className="bad-catalog-list">
-              {items.map((p) => (
-                <div key={p.sku} className="bad-catalog-item">
-                  <div className="bad-catalog-name">
-                    <div>
-                      <strong className="bad-item-title">{p.productName}</strong>
-                      <div className="bad-item-meta">
-                        {p.sku && <span className="sku-tag">SKU: {p.sku}</span>}
-                        {p.catalogId && <span className="sku-tag">Catalog #{p.catalogId}</span>}
-                      </div>
-                      <div className="bad-item-reason">
-                        {p.recommendationReason}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bad-catalog-stats">
-                    <div className="bad-stat">
-                      <span className="bad-stat-label">Total Orders</span>
-                      <strong className="bad-stat-val">{p.totalOrders}</strong>
-                    </div>
-                    <div className="bad-stat">
-                      <span className="bad-stat-label">Return Rate</span>
-                      <strong
-                        className={`bad-stat-val ${
-                          p.returnRate > 25 ? "text-loss" : p.returnRate > 15 ? "text-warn" : "text-profit"
-                        }`}
-                      >
-                        {p.returnRate.toFixed(0)}%
-                      </strong>
-                    </div>
-                    <div className="bad-stat">
-                      <span className="bad-stat-label">Net Profit</span>
-                      <strong
-                        className={`bad-stat-val ${p.netProfit < 0 ? "text-loss" : "text-profit"}`}
-                      >
-                        {fmt(p.netProfit)}
-                      </strong>
-                    </div>
-                    <div className="bad-stat">
-                      <span className="bad-stat-label">Action</span>
-                      <strong className="bad-stat-action">{p.recommendationAction}</strong>
-                    </div>
-                  </div>
-                </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
+              {items.map(p => (
+                <ProductCard key={p.sku} product={p} color={sec.color} actionText={sec.action} actionBg={sec.actionBg} />
               ))}
             </div>
           </div>

@@ -50,8 +50,58 @@ export default function MeeshoPaymentAnalyzerPage() {
         appName="Meesho Payment Analyzer"
         faqs={analyzerFaqs}
       />
-      <PaymentAnalyzerClient />
+
+      {/* Top Hero Banner */}
+      <section
+        style={{
+          padding: '2.5rem 0 1.5rem',
+          background: 'radial-gradient(ellipse 70% 40% at 50% -10%, rgba(244,51,151,0.12) 0%, transparent 70%)',
+          borderBottom: '1px solid var(--border)',
+        }}
+      >
+        <div className="container-main" style={{ textAlign: 'center' }}>
+          <div style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center' }}>
+            <span style={{ padding: '0.2rem 0.6rem', borderRadius: '999px', background: 'rgba(244,51,151,0.12)', color: '#f43397', fontSize: '0.72rem', fontWeight: '700' }}>
+              Meesho Supplier Intelligence
+            </span>
+            <span style={{ padding: '0.2rem 0.6rem', borderRadius: '999px', background: 'var(--success-bg)', color: 'var(--success)', fontSize: '0.72rem', fontWeight: '700' }}>
+              🔒 100% Private &amp; Local
+            </span>
+          </div>
+
+          <h1
+            style={{
+              fontSize: 'clamp(1.6rem, 4vw, 2.5rem)',
+              fontWeight: '900',
+              lineHeight: 1.15,
+              letterSpacing: '-0.03em',
+              marginBottom: '0.5rem',
+              color: 'var(--text-primary)',
+            }}
+          >
+            Meesho <span className="gradient-text">Payment Sheet</span> Analyzer
+          </h1>
+
+          <p
+            style={{
+              color: 'var(--text-secondary)',
+              fontSize: '0.95rem',
+              maxWidth: '560px',
+              margin: '0 auto',
+              lineHeight: 1.5,
+            }}
+          >
+            Analyze your true P&amp;L, return shipping loss, RTO rates, and get an instant catalog optimization action plan.
+          </p>
+        </div>
+      </section>
+
+      {/* Main Tool Application */}
+      <section style={{ padding: '2rem 0 4rem' }}>
+        <div className="container-main">
+          <PaymentAnalyzerClient />
+        </div>
+      </section>
     </>
   );
 }
-
