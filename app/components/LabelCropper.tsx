@@ -50,7 +50,19 @@ const LAYOUT_CONFIGS: LayoutConfig[] = [
   },
 ];
 
-export default function LabelCropper() {
+interface LabelCropperProps {
+  platform?: string;
+}
+
+function getFormattedDate(): string {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = String(now.getFullYear()).slice(-2);
+  return `${day}-${month}-${year}`;
+}
+
+export default function LabelCropper({ platform = "meesho" }: LabelCropperProps = {}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [labels, setLabels] = useState<LabelRegion[]>([]);
@@ -101,8 +113,8 @@ export default function LabelCropper() {
     const pageOrientation = selectedLayout === 6 ? "portrait" : "portrait";
     try {
       const result = await createA4Pdf(file, labels, selectedLayout, pageOrientation);
-      const baseName = file.name.replace(/\.pdf$/i, "");
-      downloadBytes(result, `${baseName}-A4-${orientation}-${selectedLayout}up.pdf`);
+      const todayDate = getFormattedDate();
+      downloadBytes(result, `${platform}-${todayDate}.pdf`);
     } catch (e) {
       alert("Error generating A4 PDF: " + String(e));
     } finally {
@@ -114,11 +126,11 @@ export default function LabelCropper() {
     if (!file || labels.length === 0) return;
     setDownloadingFormat("individual");
     try {
+      const todayDate = getFormattedDate();
       for (let i = 0; i < labels.length; i++) {
         const result = await createIndividualLabelPdf(file, labels[i]);
-        const baseName = file.name.replace(/\.pdf$/i, "");
         const labelNum = String(i + 1).padStart(2, "0");
-        downloadBytes(result, `${baseName}-label-${labelNum}.pdf`);
+        downloadBytes(result, `${platform}-${todayDate}-label-${labelNum}.pdf`);
       }
     } catch (e) {
       alert("Error generating Thermal PDF: " + String(e));

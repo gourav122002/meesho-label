@@ -52,7 +52,7 @@ export default function ToolPageLayout({
 
       {/* The actual tool */}
       <section className="tp-tool-area container">
-        {cropper ?? <LabelCropper />}
+        {cropper ?? <LabelCropper platform={name.toLowerCase()} />}
       </section>
 
       {/* SEO benefit cards */}
